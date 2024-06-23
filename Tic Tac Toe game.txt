@@ -1,0 +1,62 @@
+# Function to print the Tic Tac Toe board
+def print_board(board):
+    for row in board:
+        print(" | ".join(row))
+        print("-" * 9)
+
+# Function to check if any player has won
+def check_winner(board, player):
+    for row in board:
+        if all(cell == player for cell in row):
+            return True
+    for col in range(3):
+        if all(board[row][col] == player for row in range(3)):
+            return True
+    if all(board[i][i] == player for i in range(3)):
+        return True
+    if all(board[i][2 - i] == player for i in range(3)):
+        return True
+    return False
+
+# Function to play the game
+def play_game():
+    board = [[" " for _ in range(3)] for _ in range(3)]
+    players = ['X', 'O']
+    current_player = 0
+    moves_left = 9
+
+    print("Welcome to Tic Tac Toe!")
+    print_board(board)
+
+    while moves_left > 0:
+        player = players[current_player]
+        print(f"Player {player}'s turn.")
+
+        while True:
+            try:
+                row = int(input("Enter row number (0-2): "))
+                col = int(input("Enter column number (0-2): "))
+                if board[row][col] == " ":
+                    board[row][col] = player
+                    break
+                else:
+                    print("That spot is already taken! Try again.")
+            except ValueError:
+                print("Invalid input! Please enter a number.")
+            except IndexError:
+                print("Invalid row or column! Please enter a number between 0 and 2.")
+
+        print_board(board)
+
+        if check_winner(board, player):
+            print(f"Player {player} wins!")
+            break
+
+        current_player = 1 - current_player
+        moves_left -= 1
+
+    if moves_left == 0:
+        print("It's a draw!")
+
+# Start the game
+play_game()
